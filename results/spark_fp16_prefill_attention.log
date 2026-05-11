@@ -1,0 +1,22 @@
+GPU: NVIDIA GB10
+PyTorch: 2.12.0a0+0291f960b6.nv26.04.48445190
+CUDA: 13.2
+
+[Test  1 of 16] B= 1 S=   1024 H= 64 D=128 runtime=    0.011 s lat=       0.757 ms tok/s=   1352063.1 TFLOP/s≈    45.37 mem=   0.06 GB temp=35C power=6.0W
+[Test  2 of 16] B= 1 S=   4096 H= 64 D=128 runtime=    0.141 s lat=       9.403 ms tok/s=    435604.4 TFLOP/s≈    58.47 mem=   0.25 GB temp=35C power=6.9W
+[Test  3 of 16] B= 1 S=  16384 H= 64 D=128 runtime=    2.089 s lat=     139.278 ms tok/s=    117635.1 TFLOP/s≈    63.15 mem=   1.00 GB temp=36C power=11.8W
+[Test  4 of 16] B= 1 S=  65536 H= 64 D=128 runtime=   33.012 s lat=    2200.793 ms tok/s=     29778.4 TFLOP/s≈    63.95 mem=   4.02 GB temp=38C power=12.2W
+[Test  5 of 16] B= 2 S=   1024 H= 64 D=128 runtime=    0.024 s lat=       1.586 ms tok/s=   1291011.5 TFLOP/s≈    43.32 mem=   0.13 GB temp=38C power=11.6W
+[Test  6 of 16] B= 2 S=   4096 H= 64 D=128 runtime=    0.278 s lat=      18.524 ms tok/s=    442247.0 TFLOP/s≈    59.36 mem=   0.50 GB temp=38C power=11.5W
+[Test  7 of 16] B= 2 S=  16384 H= 64 D=128 runtime=    4.175 s lat=     278.327 ms tok/s=    117732.2 TFLOP/s≈    63.21 mem=   2.01 GB temp=38C power=12.0W
+[Test  8 of 16] B= 2 S=  65536 H= 64 D=128 runtime=   66.009 s lat=    4400.624 ms tok/s=     29784.9 TFLOP/s≈    63.96 mem=   8.03 GB temp=39C power=12.4W
+[Test  9 of 16] B= 4 S=   1024 H= 64 D=128 runtime=    0.044 s lat=       2.903 ms tok/s=   1411059.2 TFLOP/s≈    47.35 mem=   0.25 GB temp=39C power=11.6W
+[Test 10 of 16] B= 4 S=   4096 H= 64 D=128 runtime=    0.551 s lat=      36.747 ms tok/s=    445855.8 TFLOP/s≈    59.84 mem=   1.00 GB temp=39C power=11.5W
+[Test 11 of 16] B= 4 S=  16384 H= 64 D=128 runtime=    8.331 s lat=     555.410 ms tok/s=    117995.7 TFLOP/s≈    63.35 mem=   4.02 GB temp=39C power=12.2W
+[Test 12 of 16] B= 4 S=  65536 H= 64 D=128 runtime=  131.854 s lat=    8790.255 ms tok/s=     29822.1 TFLOP/s≈    64.04 mem=  16.06 GB temp=39C power=12.4W
+[Test 13 of 16] B= 8 S=   1024 H= 64 D=128 runtime=    0.083 s lat=       5.544 ms tok/s=   1477752.3 TFLOP/s≈    49.59 mem=   0.50 GB temp=39C power=10.5W
+[Test 14 of 16] B= 8 S=   4096 H= 64 D=128 runtime=    1.102 s lat=      73.450 ms tok/s=    446125.5 TFLOP/s≈    59.88 mem=   2.01 GB temp=39C power=12.1W
+[Test 15 of 16] B= 8 S=  16384 H= 64 D=128 runtime=   16.642 s lat=    1109.476 ms tok/s=    118138.7 TFLOP/s≈    63.43 mem=   8.03 GB temp=39C power=12.2W
+[Test 16 of 16] B= 8 S=  65536 H= 64 D=128 runtime=  263.776 s lat=   17585.040 ms tok/s=     29814.4 TFLOP/s≈    64.03 mem=  32.13 GB temp=39C power=12.3W
+
+Wrote results to /workspace/results/spark_fp16_prefill_attention_results.csv

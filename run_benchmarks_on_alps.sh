@@ -11,5 +11,9 @@
 
 cd "$SLURM_SUBMIT_DIR"
 
+mkdir -p results
+srun --environment="${SLURM_SUBMIT_DIR}/slurm_environment.toml" \
+     nvidia-smi -q -d POWER > results/slurm_power_caps.txt
+
 srun --environment="${SLURM_SUBMIT_DIR}/slurm_environment.toml" \
      bash run_benchmarks.sh slurm

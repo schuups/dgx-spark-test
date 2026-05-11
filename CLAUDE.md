@@ -17,8 +17,8 @@ Both scripts share the same shape: parse args → sweep `(batch × seq/kv)` grid
 
 `run_benchmarks.sh <context-tag>` is the generic entrypoint that runs both benchmarks back-to-back with the canonical sweep (heads=64, head_dim=128, bf16) and writes all outputs to `results/${tag}_*.{csv,log}`. The tag is host-context (e.g. `slurm`, `spark`) and lets results from different machines coexist.
 
-- **On Alps (GH200, CSCS)**: submit via `sbatch slurm_submit.sbatch` — this calls `run_benchmarks.sh slurm` inside the NVIDIA PyTorch container declared in `slurm_environment.toml` (`nvcr.io#nvidia/pytorch:26.04-py3`). Slurm stdout/stderr land in `results/slurm_job-<jobid>.{out,err}`.
-- **On DGX Spark (enverge.ai)**: run directly inside whatever PyTorch environment the host provides: `./run_benchmarks.sh spark`.
+- **On Alps (GH200, CSCS)**: submit via `sbatch run_benchmarks_on_alps.sh` — this calls `run_benchmarks.sh slurm` inside the NVIDIA PyTorch container declared in `slurm_environment.toml` (`nvcr.io#nvidia/pytorch:26.04-py3`). Slurm stdout/stderr land in `results/slurm_job-<jobid>.{out,err}`.
+- **On DGX Spark (enverge.ai)**: run `./run_benchmarks_on_dgxspark.sh` — launches the same NGC container via Docker and calls `run_benchmarks.sh spark` inside it.
 
 Note: `slurm_environment.toml` has `workdir = /capstor/scratch/cscs/stefsch/dgx-spark-test` (missing the `u` in `stefschu`) — fix before submitting if the job can't find the scripts.
 

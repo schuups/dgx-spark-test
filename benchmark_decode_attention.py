@@ -3,6 +3,8 @@
 import argparse
 import csv
 import subprocess
+import threading
+import warnings
 from dataclasses import dataclass
 
 import torch
@@ -18,12 +20,13 @@ class Result:
     heads: int
     head_dim: int
     dtype: str
+    runtime_s: float
     latency_ms: float
     tokens_per_s: float
     approx_tflops: float
     max_memory_gb: float
-    temperature_c: float
-    power_w: float
+    max_temperature_c: float
+    max_power_w: float
 
 
 def query_gpu_telemetry(gpu_index: int):
@@ -38,15 +41,19 @@ def query_gpu_telemetry(gpu_index: int):
     return float(temp.strip()), float(power.strip())
 
 
-def parse_dtype(name: str):
-    name = name.lower()
-    if name in {"bf16", "bfloat16"}:
-        return torch.bfloat16
-    if name in {"fp16", "float16", "half"}:
-        return torch.float16
-    if name in {"fp32", "float32"}:
-        return torch.float32
-    raise ValueError(f"Unsupported dtype: {name}")
+def _poll_telemetry(gpu_index: int, stop: threading.Event, out: dict, interval: float = 0.1):
+    max_temp = max_power = 0.0
+    while True:
+        try:
+            t, p = query_gpu_telemetry(gpu_index)
+            max_temp = max(max_temp, t)
+            max_power = max(max_power, p)
+        except Exception:
+            pass
+        if stop.wait(interval):
+            break
+    out["max_temperature_c"] = max_temp
+    out["max_power_w"] = max_power
 
 
 def decode_attention_flops(batch, heads, kv_len, head_dim):
@@ -71,12 +78,17 @@ def run_one(
     device = "cuda"
 
     # Decode phase: one new query token attends over an existing KV cache.
-    q = torch.randn(batch, heads, 1, head_dim, device=device, dtype=dtype)
-    k = torch.randn(batch, heads, kv_len, head_dim, device=device, dtype=dtype)
-    v = torch.randn(batch, heads, kv_len, head_dim, device=device, dtype=dtype)
+    q = torch.empty(batch, heads, 1, head_dim, device=device, dtype=dtype)
+    k = torch.empty(batch, heads, kv_len, head_dim, device=device, dtype=dtype)
+    v = torch.empty(batch, heads, kv_len, head_dim, device=device, dtype=dtype)
 
     torch.cuda.empty_cache()
     torch.cuda.reset_peak_memory_stats()
+
+    stop_event = threading.Event()
+    telemetry: dict = {}
+    poller = threading.Thread(target=_poll_telemetry, args=(gpu_index, stop_event, telemetry), daemon=True)
+    poller.start()
 
     with sdpa_kernel([SDPBackend.FLASH_ATTENTION, SDPBackend.EFFICIENT_ATTENTION]):
         for _ in range(warmup):
@@ -94,9 +106,11 @@ def run_one(
 
         torch.cuda.synchronize()
 
-    temperature_c, power_w = query_gpu_telemetry(gpu_index)
+    stop_event.set()
+    poller.join()
 
     latency_ms = start.elapsed_time(end) / iters
+    runtime_s = start.elapsed_time(end) / 1e3
     tokens_per_s = batch / (latency_ms / 1e3)
 
     flops = decode_attention_flops(batch, heads, kv_len, head_dim)
@@ -111,12 +125,13 @@ def run_one(
         heads=heads,
         head_dim=head_dim,
         dtype=str(dtype).replace("torch.", ""),
+        runtime_s=runtime_s,
         latency_ms=latency_ms,
         tokens_per_s=tokens_per_s,
         approx_tflops=approx_tflops,
         max_memory_gb=max_memory_gb,
-        temperature_c=temperature_c,
-        power_w=power_w,
+        max_temperature_c=telemetry.get("max_temperature_c", 0.0),
+        max_power_w=telemetry.get("max_power_w", 0.0),
     )
 
 
@@ -127,7 +142,7 @@ def main():
     parser.add_argument("--kv-lens", nargs="+", type=int, default=[1024, 2048, 4096, 8192, 16384, 32768])
     parser.add_argument("--heads", type=int, default=32)
     parser.add_argument("--head-dim", type=int, default=128)
-    parser.add_argument("--dtype", type=str, default="bf16")
+    parser.add_argument("--dtype", type=str, default="fp16")
     parser.add_argument("--warmup", type=int, default=50)
     parser.add_argument("--iters", type=int, default=200)
     parser.add_argument("--csv", type=str, default="decode_attention_results.csv")
@@ -135,11 +150,17 @@ def main():
 
     args = parser.parse_args()
 
+    warnings.filterwarnings("ignore")
+
     assert torch.cuda.is_available(), "CUDA GPU not available"
 
     torch.cuda.set_device(args.gpu_index)
 
-    dtype = parse_dtype(args.dtype)
+    dtypes = {"fp16": torch.float16, "bf16": torch.bfloat16, "fp32": torch.float32}
+    if args.dtype not in dtypes:
+        raise ValueError(f"Unsupported dtype: {args.dtype}. Choose from {list(dtypes)}")
+    dtype = dtypes[args.dtype]
+
     gpu_name = torch.cuda.get_device_name(args.gpu_index)
 
     print("GPU:", gpu_name)
@@ -148,9 +169,14 @@ def main():
     print()
 
     results = []
+    total = len(args.batch_sizes) * len(args.kv_lens)
+    width = len(str(total))
+    cell = 0
 
     for batch in args.batch_sizes:
         for kv_len in args.kv_lens:
+            cell += 1
+            tag = f"[Test {cell:{width}d} of {total}]"
             try:
                 result = run_one(
                     gpu_name=gpu_name,
@@ -167,21 +193,26 @@ def main():
                 results.append(result)
 
                 print(
+                    f"{tag} "
                     f"B={result.batch:2d} "
                     f"KV={result.kv_len:7d} "
                     f"H={result.heads:3d} "
                     f"D={result.head_dim:3d} "
-                    f"lat={result.latency_ms:9.4f} ms "
+                    f"runtime={result.runtime_s:9.3f} s "
+                    f"lat={result.latency_ms:12.4f} ms "
                     f"tok/s={result.tokens_per_s:12.1f} "
                     f"TFLOP/s≈{result.approx_tflops:9.2f} "
                     f"mem={result.max_memory_gb:7.2f} GB "
-                    f"temp={result.temperature_c:.0f}C "
-                    f"power={result.power_w:.1f}W"
+                    f"temp={result.max_temperature_c:.0f}C "
+                    f"power={result.max_power_w:.1f}W"
                 )
 
             except torch.cuda.OutOfMemoryError:
                 torch.cuda.empty_cache()
-                print(f"B={batch} KV={kv_len}: OOM")
+                print(f"{tag} B={batch} KV={kv_len}: OOM")
+            except RuntimeError as e:
+                torch.cuda.empty_cache()
+                print(f"{tag} B={batch} KV={kv_len}: skipped ({e})")
 
     with open(args.csv, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=Result.__dataclass_fields__.keys())
@@ -195,4 +226,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -24,29 +24,32 @@ cd "${SCRIPT_DIR}"
 echo "Running benchmarks with context=${CONTEXT}"
 echo "Results dir: ${RESULTS_DIR}"
 
-# heads/head_dim/dtype are the canonical config; keep identical across hosts so
-# overlapping shapes are directly comparable. Large-S/large-B cells may OOM on
-# smaller GPUs (e.g. DGX Spark); the benchmark scripts catch OOM and continue.
+BATCH_SIZES="1 2 4 8"
+SEQ_LENS="1024 4096 16384 65536"
+KV_LENS="1024 4096 16384 65536"
 
-python benchmark_prefill_attention.py \
-  --dtype bf16 \
-  --batch-sizes 1 2 4 8 16 \
-  --seq-lens 1024 2048 4096 8192 16384 32768 65536 \
+echo ""
+echo "=== prefill | dtype=fp16 ==="
+python -u benchmark_prefill_attention.py \
+  --dtype fp16 \
+  --batch-sizes ${BATCH_SIZES} \
+  --seq-lens ${SEQ_LENS} \
   --heads 64 \
   --head-dim 128 \
-  --warmup 10 \
-  --iters 30 \
-  --csv "${RESULTS_DIR}/${CONTEXT}_prefill_attention_results.csv" \
-  2>&1 | tee "${RESULTS_DIR}/${CONTEXT}_prefill_attention.log"
+  --warmup 5 \
+  --iters 15 \
+  --csv "${RESULTS_DIR}/${CONTEXT}_fp16_prefill_attention_results.csv" \
+  2>&1 | tee "${RESULTS_DIR}/${CONTEXT}_fp16_prefill_attention.log"
 
-python benchmark_decode_attention.py \
-  --dtype bf16 \
-  --batch-sizes 1 2 4 8 16 \
-  --kv-lens 1024 2048 4096 8192 16384 32768 65536 \
+echo ""
+echo "=== decode | dtype=fp16 ==="
+python -u benchmark_decode_attention.py \
+  --dtype fp16 \
+  --batch-sizes ${BATCH_SIZES} \
+  --kv-lens ${KV_LENS} \
   --heads 64 \
   --head-dim 128 \
-  --warmup 50 \
-  --iters 200 \
-  --csv "${RESULTS_DIR}/${CONTEXT}_decode_attention_results.csv" \
-  2>&1 | tee "${RESULTS_DIR}/${CONTEXT}_decode_attention.log"
-
+  --warmup 20 \
+  --iters 50 \
+  --csv "${RESULTS_DIR}/${CONTEXT}_fp16_decode_attention_results.csv" \
+  2>&1 | tee "${RESULTS_DIR}/${CONTEXT}_fp16_decode_attention.log"

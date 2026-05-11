@@ -1,0 +1,120 @@
+
+==============NVSMI LOG==============
+
+Timestamp                                              : Mon May 11 20:36:09 2026
+Driver Version                                         : 590.48.01
+CUDA Version                                           : 13.2
+
+Attached GPUs                                          : 4
+GPU 00000009:01:00.0
+    GPU Power Readings
+        Average Power Draw                             : 116.60 W
+        Instantaneous Power Draw                       : 135.98 W
+        Current Power Limit                            : 900.00 W
+        Requested Power Limit                          : 900.00 W
+        Default Power Limit                            : 900.00 W
+        Min Power Limit                                : 100.00 W
+        Max Power Limit                                : 900.00 W
+    Power Samples
+        Duration                                       : 2.36 sec
+        Number of Samples                              : 119
+        Max                                            : 139.00 W
+        Min                                            : 84.41 W
+        Avg                                            : 98.80 W
+    GPU Memory Power Readings 
+        Average Power Draw                             : 17.68 W
+        Instantaneous Power Draw                       : N/A
+    Module Power Readings
+        Average Power Draw                             : 200.30 W
+        Instantaneous Power Draw                       : 220.48 W
+        Current Power Limit                            : 660.12 W
+        Requested Power Limit                          : 660.12 W
+        Default Power Limit                            : 1000.00 W
+        Min Power Limit                                : 200.00 W
+        Max Power Limit                                : 1000.00 W
+    EDPp Multiplier                                    : 0.00%
+
+GPU 00000019:01:00.0
+    GPU Power Readings
+        Average Power Draw                             : 95.00 W
+        Instantaneous Power Draw                       : 92.10 W
+        Current Power Limit                            : 900.00 W
+        Requested Power Limit                          : 900.00 W
+        Default Power Limit                            : 900.00 W
+        Min Power Limit                                : 100.00 W
+        Max Power Limit                                : 900.00 W
+    Power Samples
+        Duration                                       : 2.36 sec
+        Number of Samples                              : 119
+        Max                                            : 96.15 W
+        Min                                            : 91.81 W
+        Avg                                            : 94.61 W
+    GPU Memory Power Readings 
+        Average Power Draw                             : 21.07 W
+        Instantaneous Power Draw                       : N/A
+    Module Power Readings
+        Average Power Draw                             : 173.67 W
+        Instantaneous Power Draw                       : 170.88 W
+        Current Power Limit                            : 660.12 W
+        Requested Power Limit                          : 660.12 W
+        Default Power Limit                            : 1000.00 W
+        Min Power Limit                                : 200.00 W
+        Max Power Limit                                : 1000.00 W
+    EDPp Multiplier                                    : 0.00%
+
+GPU 00000029:01:00.0
+    GPU Power Readings
+        Average Power Draw                             : 83.63 W
+        Instantaneous Power Draw                       : 83.49 W
+        Current Power Limit                            : 900.00 W
+        Requested Power Limit                          : 900.00 W
+        Default Power Limit                            : 900.00 W
+        Min Power Limit                                : 100.00 W
+        Max Power Limit                                : 900.00 W
+    Power Samples
+        Duration                                       : 2.36 sec
+        Number of Samples                              : 119
+        Max                                            : 84.49 W
+        Min                                            : 82.74 W
+        Avg                                            : 83.72 W
+    GPU Memory Power Readings 
+        Average Power Draw                             : 17.70 W
+        Instantaneous Power Draw                       : N/A
+    Module Power Readings
+        Average Power Draw                             : 172.30 W
+        Instantaneous Power Draw                       : 172.31 W
+        Current Power Limit                            : 660.12 W
+        Requested Power Limit                          : 660.12 W
+        Default Power Limit                            : 1000.00 W
+        Min Power Limit                                : 200.00 W
+        Max Power Limit                                : 1000.00 W
+    EDPp Multiplier                                    : 0.00%
+
+GPU 00000039:01:00.0
+    GPU Power Readings
+        Average Power Draw                             : 97.96 W
+        Instantaneous Power Draw                       : 98.06 W
+        Current Power Limit                            : 900.00 W
+        Requested Power Limit                          : 900.00 W
+        Default Power Limit                            : 900.00 W
+        Min Power Limit                                : 100.00 W
+        Max Power Limit                                : 900.00 W
+    Power Samples
+        Duration                                       : 2.36 sec
+        Number of Samples                              : 119
+        Max                                            : 98.73 W
+        Min                                            : 97.33 W
+        Avg                                            : 97.96 W
+    GPU Memory Power Readings 
+        Average Power Draw                             : 25.34 W
+        Instantaneous Power Draw                       : N/A
+    Module Power Readings
+        Average Power Draw                             : 172.20 W
+        Instantaneous Power Draw                       : 171.52 W
+        Current Power Limit                            : 660.12 W
+        Requested Power Limit                          : 660.12 W
+        Default Power Limit                            : 1000.00 W
+        Min Power Limit                                : 200.00 W
+        Max Power Limit                                : 1000.00 W
+    EDPp Multiplier                                    : 0.00%
+
