@@ -1,0 +1,9 @@
+image = "nvcr.io#nvidia/pytorch:26.04-py3"
+
+mounts = [
+    "/users/stefschu",
+    "/capstor"
+]
+
+workdir = "/capstor/scratch/cscs/stefschu/dgx-spark-test"
+

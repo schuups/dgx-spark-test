@@ -1,0 +1,41 @@
+GPU: NVIDIA GH200 120GB
+PyTorch: 2.12.0a0+0291f960b6.nv26.04.48445190
+CUDA: 13.2
+
+B= 1 S=   1024 H= 64 D=128 lat=    0.101 ms tok/s=  10091347.5 TFLOP/s≈   338.61 mem=   0.06 GB temp=25C power=115.5W
+B= 1 S=   2048 H= 64 D=128 lat=    0.290 ms tok/s=   7050295.7 TFLOP/s≈   473.14 mem=   0.13 GB temp=25C power=127.2W
+B= 1 S=   4096 H= 64 D=128 lat=    0.955 ms tok/s=   4290416.6 TFLOP/s≈   575.85 mem=   0.25 GB temp=27C power=153.6W
+B= 1 S=   8192 H= 64 D=128 lat=    3.875 ms tok/s=   2113839.6 TFLOP/s≈   567.43 mem=   0.50 GB temp=28C power=227.7W
+B= 1 S=  16384 H= 64 D=128 lat=   14.890 ms tok/s=   1100343.1 TFLOP/s≈   590.74 mem=   1.00 GB temp=32C power=433.6W
+B= 1 S=  32768 H= 64 D=128 lat=   57.288 ms tok/s=    571986.6 TFLOP/s≈   614.17 mem=   2.01 GB temp=33C power=502.8W
+B= 1 S=  65536 H= 64 D=128 lat=  229.558 ms tok/s=    285487.8 TFLOP/s≈   613.08 mem=   4.02 GB temp=36C power=543.5W
+B= 2 S=   1024 H= 64 D=128 lat=    0.167 ms tok/s=  12263825.0 TFLOP/s≈   411.51 mem=   0.13 GB temp=32C power=464.0W
+B= 2 S=   2048 H= 64 D=128 lat=    0.522 ms tok/s=   7841679.9 TFLOP/s≈   526.25 mem=   0.25 GB temp=31C power=392.6W
+B= 2 S=   4096 H= 64 D=128 lat=    1.918 ms tok/s=   4272004.4 TFLOP/s≈   573.38 mem=   0.50 GB temp=33C power=339.4W
+B= 2 S=   8192 H= 64 D=128 lat=    7.680 ms tok/s=   2133219.0 TFLOP/s≈   572.63 mem=   1.00 GB temp=33C power=309.8W
+B= 2 S=  16384 H= 64 D=128 lat=   29.154 ms tok/s=   1123961.0 TFLOP/s≈   603.42 mem=   2.01 GB temp=38C power=524.5W
+B= 2 S=  32768 H= 64 D=128 lat=  114.042 ms tok/s=    574667.9 TFLOP/s≈   617.04 mem=   4.02 GB temp=35C power=510.0W
+B= 2 S=  65536 H= 64 D=128 lat=  458.107 ms tok/s=    286116.5 TFLOP/s≈   614.43 mem=   8.03 GB temp=35C power=518.7W
+B= 4 S=   1024 H= 64 D=128 lat=    0.303 ms tok/s=  13525889.7 TFLOP/s≈   453.85 mem=   0.25 GB temp=32C power=441.2W
+B= 4 S=   2048 H= 64 D=128 lat=    0.991 ms tok/s=   8265850.4 TFLOP/s≈   554.71 mem=   0.50 GB temp=31C power=380.2W
+B= 4 S=   4096 H= 64 D=128 lat=    3.887 ms tok/s=   4214862.4 TFLOP/s≈   565.71 mem=   1.00 GB temp=32C power=322.9W
+B= 4 S=   8192 H= 64 D=128 lat=   15.190 ms tok/s=   2157197.8 TFLOP/s≈   579.07 mem=   2.01 GB temp=34C power=428.3W
+B= 4 S=  16384 H= 64 D=128 lat=   57.652 ms tok/s=   1136750.5 TFLOP/s≈   610.29 mem=   4.02 GB temp=41C power=532.2W
+B= 4 S=  32768 H= 64 D=128 lat=  226.578 ms tok/s=    578485.8 TFLOP/s≈   621.14 mem=   8.03 GB temp=36C power=520.0W
+B= 4 S=  65536 H= 64 D=128 lat=  916.120 ms tok/s=    286146.0 TFLOP/s≈   614.49 mem=  16.06 GB temp=39C power=536.6W
+B= 8 S=   1024 H= 64 D=128 lat=    0.552 ms tok/s=  14838659.2 TFLOP/s≈   497.90 mem=   0.50 GB temp=36C power=465.1W
+B= 8 S=   2048 H= 64 D=128 lat=    2.004 ms tok/s=   8175940.4 TFLOP/s≈   548.68 mem=   1.00 GB temp=32C power=373.7W
+B= 8 S=   4096 H= 64 D=128 lat=    7.952 ms tok/s=   4120507.7 TFLOP/s≈   553.05 mem=   2.01 GB temp=39C power=328.6W
+B= 8 S=   8192 H= 64 D=128 lat=   30.023 ms tok/s=   2182879.9 TFLOP/s≈   585.96 mem=   4.02 GB temp=38C power=496.3W
+B= 8 S=  16384 H= 64 D=128 lat=  114.870 ms tok/s=   1141051.1 TFLOP/s≈   612.60 mem=   8.03 GB temp=38C power=504.9W
+B= 8 S=  32768 H= 64 D=128 lat=  449.685 ms tok/s=    582950.9 TFLOP/s≈   625.94 mem=  16.06 GB temp=37C power=550.2W
+B= 8 S=  65536 H= 64 D=128 lat= 1825.230 ms tok/s=    287244.9 TFLOP/s≈   616.85 mem=  32.13 GB temp=38C power=535.8W
+B=16 S=   1024 H= 64 D=128 lat=    1.067 ms tok/s=  15355409.1 TFLOP/s≈   515.24 mem=   1.00 GB temp=33C power=437.1W
+B=16 S=   2048 H= 64 D=128 lat=    4.328 ms tok/s=   7570921.8 TFLOP/s≈   508.08 mem=   2.01 GB temp=33C power=379.4W
+B=16 S=   4096 H= 64 D=128 lat=   15.799 ms tok/s=   4148087.9 TFLOP/s≈   556.75 mem=   4.02 GB temp=35C power=438.6W
+B=16 S=   8192 H= 64 D=128 lat=   59.223 ms tok/s=   2213210.8 TFLOP/s≈   594.10 mem=   8.03 GB temp=38C power=519.3W
+B=16 S=  16384 H= 64 D=128 lat=  228.065 ms tok/s=   1149427.7 TFLOP/s≈   617.09 mem=  16.06 GB temp=43C power=546.9W
+B=16 S=  32768 H= 64 D=128 lat=  896.616 ms tok/s=    584740.8 TFLOP/s≈   627.86 mem=  32.13 GB temp=39C power=539.3W
+B=16 S=  65536 H= 64 D=128 lat= 3668.519 ms tok/s=    285830.9 TFLOP/s≈   613.82 mem=  64.25 GB temp=36C power=526.6W
+
+Wrote results to prefill_attention_results_slurm.csv
