@@ -1,0 +1,23 @@
+GPU: NVIDIA GH200 120GB
+PyTorch: 2.12.0a0+0291f960b6.nv26.04.48445190
+CUDA: 13.2
+Flash Attention: FA3 (flash_attn_interface)
+
+[Test  1 of 16] B= 1 KV=   1024 H= 64 D=128 runtime=    0.005 s lat=      0.0928 ms tok/s=     10777.1 TFLOP/s≈     0.36 mem=   0.02 GB temp=27C power=128.2W
+[Test  2 of 16] B= 1 KV=   4096 H= 64 D=128 runtime=    0.005 s lat=      0.0918 ms tok/s=     10897.8 TFLOP/s≈     1.46 mem=   0.06 GB temp=27C power=138.7W
+[Test  3 of 16] B= 1 KV=  16384 H= 64 D=128 runtime=    0.007 s lat=      0.1447 ms tok/s=      6913.0 TFLOP/s≈     3.71 mem=   0.25 GB temp=27C power=145.3W
+[Test  4 of 16] B= 1 KV=  65536 H= 64 D=128 runtime=    0.027 s lat=      0.5437 ms tok/s=      1839.3 TFLOP/s≈     3.95 mem=   1.00 GB temp=30C power=153.4W
+[Test  5 of 16] B= 2 KV=   1024 H= 64 D=128 runtime=    0.004 s lat=      0.0817 ms tok/s=     24468.2 TFLOP/s≈     0.82 mem=   0.03 GB temp=28C power=155.9W
+[Test  6 of 16] B= 2 KV=   4096 H= 64 D=128 runtime=    0.004 s lat=      0.0807 ms tok/s=     24777.6 TFLOP/s≈     3.33 mem=   0.13 GB temp=28C power=156.7W
+[Test  7 of 16] B= 2 KV=  16384 H= 64 D=128 runtime=    0.008 s lat=      0.1546 ms tok/s=     12940.6 TFLOP/s≈     6.95 mem=   0.50 GB temp=28C power=161.2W
+[Test  8 of 16] B= 2 KV=  65536 H= 64 D=128 runtime=    0.029 s lat=      0.5753 ms tok/s=      3476.3 TFLOP/s≈     7.47 mem=   2.00 GB temp=30C power=179.0W
+[Test  9 of 16] B= 4 KV=   1024 H= 64 D=128 runtime=    0.004 s lat=      0.0756 ms tok/s=     52891.2 TFLOP/s≈     1.77 mem=   0.06 GB temp=28C power=178.7W
+[Test 10 of 16] B= 4 KV=   4096 H= 64 D=128 runtime=    0.004 s lat=      0.0864 ms tok/s=     46317.6 TFLOP/s≈     6.22 mem=   0.25 GB temp=28C power=169.3W
+[Test 11 of 16] B= 4 KV=  16384 H= 64 D=128 runtime=    0.015 s lat=      0.2999 ms tok/s=     13338.3 TFLOP/s≈     7.16 mem=   1.00 GB temp=29C power=178.5W
+[Test 12 of 16] B= 4 KV=  65536 H= 64 D=128 runtime=    0.058 s lat=      1.1673 ms tok/s=      3426.7 TFLOP/s≈     7.36 mem=   4.00 GB temp=34C power=203.4W
+[Test 13 of 16] B= 8 KV=   1024 H= 64 D=128 runtime=    0.004 s lat=      0.0711 ms tok/s=    112507.2 TFLOP/s≈     3.78 mem=   0.13 GB temp=29C power=211.6W
+[Test 14 of 16] B= 8 KV=   4096 H= 64 D=128 runtime=    0.008 s lat=      0.1662 ms tok/s=     48149.0 TFLOP/s≈     6.46 mem=   0.50 GB temp=28C power=197.9W
+[Test 15 of 16] B= 8 KV=  16384 H= 64 D=128 runtime=    0.030 s lat=      0.5984 ms tok/s=     13368.3 TFLOP/s≈     7.18 mem=   2.00 GB temp=32C power=213.7W
+[Test 16 of 16] B= 8 KV=  65536 H= 64 D=128 runtime=    0.123 s lat=      2.4549 ms tok/s=      3258.8 TFLOP/s≈     7.00 mem=   8.00 GB temp=35C power=267.4W
+
+Wrote results to /capstor/scratch/cscs/stefschu/dgx-spark-test/results/fp8/slurm_fp8_decode_attention_results.csv

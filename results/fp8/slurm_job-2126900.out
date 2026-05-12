@@ -1,0 +1,58 @@
+Running benchmarks with context=slurm
+Hopper GPU (sm90): installing Flash Attention 3 (pre-built wheel)...
+Collecting flash-attn-3==3.0.0+cu130torch2.11gite2743ab
+  Downloading https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.11/flash_attn_3-3.0.0%2Bcu130torch2.11gite2743ab-cp39-abi3-linux_aarch64.whl (399.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 399.0/399.0 MB 453.2 MB/s  0:00:01
+Installing collected packages: flash-attn-3
+Successfully installed flash-attn-3-3.0.0+cu130torch2.11gite2743ab
+Flash Attention ready.
+
+=== prefill | dtype=fp8 ===
+GPU: NVIDIA GH200 120GB
+PyTorch: 2.12.0a0+0291f960b6.nv26.04.48445190
+CUDA: 13.2
+Flash Attention: FA3 (flash_attn_interface)
+
+[Test  1 of 16] B= 1 S=   1024 H= 64 D=128 runtime=    0.001 s lat=       0.100 ms tok/s=  10249402.3 TFLOP/s≈   343.91 mem=   0.04 GB temp=26C power=140.1W
+[Test  2 of 16] B= 1 S=   4096 H= 64 D=128 runtime=    0.005 s lat=       0.330 ms tok/s=  12426461.2 TFLOP/s≈  1667.85 mem=   0.16 GB temp=26C power=143.0W
+[Test  3 of 16] B= 1 S=  16384 H= 64 D=128 runtime=    0.064 s lat=       4.283 ms tok/s=   3824941.2 TFLOP/s≈  2053.50 mem=   0.63 GB temp=33C power=169.6W
+[Test  4 of 16] B= 1 S=  65536 H= 64 D=128 runtime=    0.953 s lat=      63.565 ms tok/s=   1031013.7 TFLOP/s≈  2214.08 mem=   2.52 GB temp=44C power=501.5W
+[Test  5 of 16] B= 2 S=   1024 H= 64 D=128 runtime=    0.001 s lat=       0.095 ms tok/s=  21595356.6 TFLOP/s≈   724.62 mem=   0.08 GB temp=44C power=484.9W
+[Test  6 of 16] B= 2 S=   4096 H= 64 D=128 runtime=    0.009 s lat=       0.621 ms tok/s=  13189168.1 TFLOP/s≈  1770.22 mem=   0.31 GB temp=34C power=424.2W
+[Test  7 of 16] B= 2 S=  16384 H= 64 D=128 runtime=    0.129 s lat=       8.571 ms tok/s=   3822962.9 TFLOP/s≈  2052.44 mem=   1.26 GB temp=38C power=398.4W
+[Test  8 of 16] B= 2 S=  65536 H= 64 D=128 runtime=    1.911 s lat=     127.404 ms tok/s=   1028788.4 TFLOP/s≈  2209.31 mem=   5.03 GB temp=47C power=517.2W
+[Test  9 of 16] B= 4 S=   1024 H= 64 D=128 runtime=    0.002 s lat=       0.134 ms tok/s=  30467002.0 TFLOP/s≈  1022.30 mem=   0.16 GB temp=36C power=448.2W
+[Test 10 of 16] B= 4 S=   4096 H= 64 D=128 runtime=    0.018 s lat=       1.229 ms tok/s=  13331343.2 TFLOP/s≈  1789.30 mem=   0.63 GB temp=34C power=421.4W
+[Test 11 of 16] B= 4 S=  16384 H= 64 D=128 runtime=    0.256 s lat=      17.089 ms tok/s=   3834898.1 TFLOP/s≈  2058.85 mem=   2.52 GB temp=43C power=376.0W
+[Test 12 of 16] B= 4 S=  65536 H= 64 D=128 runtime=    3.821 s lat=     254.702 ms tok/s=   1029220.1 TFLOP/s≈  2210.23 mem=  10.06 GB temp=48C power=518.9W
+[Test 13 of 16] B= 8 S=   1024 H= 64 D=128 runtime=    0.004 s lat=       0.254 ms tok/s=  32209901.4 TFLOP/s≈  1080.78 mem=   0.31 GB temp=37C power=442.7W
+[Test 14 of 16] B= 8 S=   4096 H= 64 D=128 runtime=    0.037 s lat=       2.434 ms tok/s=  13460624.9 TFLOP/s≈  1806.65 mem=   1.26 GB temp=35C power=421.8W
+[Test 15 of 16] B= 8 S=  16384 H= 64 D=128 runtime=    0.512 s lat=      34.144 ms tok/s=   3838845.0 TFLOP/s≈  2060.96 mem=   5.03 GB temp=45C power=410.6W
+[Test 16 of 16] B= 8 S=  65536 H= 64 D=128 runtime=    7.636 s lat=     509.080 ms tok/s=   1029873.8 TFLOP/s≈  2211.64 mem=  20.13 GB temp=48C power=519.8W
+
+Wrote results to /capstor/scratch/cscs/stefschu/dgx-spark-test/results/fp8/slurm_fp8_prefill_attention_results.csv
+
+=== decode | dtype=fp8 ===
+GPU: NVIDIA GH200 120GB
+PyTorch: 2.12.0a0+0291f960b6.nv26.04.48445190
+CUDA: 13.2
+Flash Attention: FA3 (flash_attn_interface)
+
+[Test  1 of 16] B= 1 KV=   1024 H= 64 D=128 runtime=    0.005 s lat=      0.0928 ms tok/s=     10777.1 TFLOP/s≈     0.36 mem=   0.02 GB temp=27C power=128.2W
+[Test  2 of 16] B= 1 KV=   4096 H= 64 D=128 runtime=    0.005 s lat=      0.0918 ms tok/s=     10897.8 TFLOP/s≈     1.46 mem=   0.06 GB temp=27C power=138.7W
+[Test  3 of 16] B= 1 KV=  16384 H= 64 D=128 runtime=    0.007 s lat=      0.1447 ms tok/s=      6913.0 TFLOP/s≈     3.71 mem=   0.25 GB temp=27C power=145.3W
+[Test  4 of 16] B= 1 KV=  65536 H= 64 D=128 runtime=    0.027 s lat=      0.5437 ms tok/s=      1839.3 TFLOP/s≈     3.95 mem=   1.00 GB temp=30C power=153.4W
+[Test  5 of 16] B= 2 KV=   1024 H= 64 D=128 runtime=    0.004 s lat=      0.0817 ms tok/s=     24468.2 TFLOP/s≈     0.82 mem=   0.03 GB temp=28C power=155.9W
+[Test  6 of 16] B= 2 KV=   4096 H= 64 D=128 runtime=    0.004 s lat=      0.0807 ms tok/s=     24777.6 TFLOP/s≈     3.33 mem=   0.13 GB temp=28C power=156.7W
+[Test  7 of 16] B= 2 KV=  16384 H= 64 D=128 runtime=    0.008 s lat=      0.1546 ms tok/s=     12940.6 TFLOP/s≈     6.95 mem=   0.50 GB temp=28C power=161.2W
+[Test  8 of 16] B= 2 KV=  65536 H= 64 D=128 runtime=    0.029 s lat=      0.5753 ms tok/s=      3476.3 TFLOP/s≈     7.47 mem=   2.00 GB temp=30C power=179.0W
+[Test  9 of 16] B= 4 KV=   1024 H= 64 D=128 runtime=    0.004 s lat=      0.0756 ms tok/s=     52891.2 TFLOP/s≈     1.77 mem=   0.06 GB temp=28C power=178.7W
+[Test 10 of 16] B= 4 KV=   4096 H= 64 D=128 runtime=    0.004 s lat=      0.0864 ms tok/s=     46317.6 TFLOP/s≈     6.22 mem=   0.25 GB temp=28C power=169.3W
+[Test 11 of 16] B= 4 KV=  16384 H= 64 D=128 runtime=    0.015 s lat=      0.2999 ms tok/s=     13338.3 TFLOP/s≈     7.16 mem=   1.00 GB temp=29C power=178.5W
+[Test 12 of 16] B= 4 KV=  65536 H= 64 D=128 runtime=    0.058 s lat=      1.1673 ms tok/s=      3426.7 TFLOP/s≈     7.36 mem=   4.00 GB temp=34C power=203.4W
+[Test 13 of 16] B= 8 KV=   1024 H= 64 D=128 runtime=    0.004 s lat=      0.0711 ms tok/s=    112507.2 TFLOP/s≈     3.78 mem=   0.13 GB temp=29C power=211.6W
+[Test 14 of 16] B= 8 KV=   4096 H= 64 D=128 runtime=    0.008 s lat=      0.1662 ms tok/s=     48149.0 TFLOP/s≈     6.46 mem=   0.50 GB temp=28C power=197.9W
+[Test 15 of 16] B= 8 KV=  16384 H= 64 D=128 runtime=    0.030 s lat=      0.5984 ms tok/s=     13368.3 TFLOP/s≈     7.18 mem=   2.00 GB temp=32C power=213.7W
+[Test 16 of 16] B= 8 KV=  65536 H= 64 D=128 runtime=    0.123 s lat=      2.4549 ms tok/s=      3258.8 TFLOP/s≈     7.00 mem=   8.00 GB temp=35C power=267.4W
+
+Wrote results to /capstor/scratch/cscs/stefschu/dgx-spark-test/results/fp8/slurm_fp8_decode_attention_results.csv

@@ -11,6 +11,16 @@ import torch
 import torch.nn.functional as F
 from torch.nn.attention import SDPBackend, sdpa_kernel
 
+try:
+    from flash_attn.cute import flash_attn_func as _fa_func
+    _HAS_FA, _FA_VERSION = True, "FA4 (flash_attn.cute)"
+except ImportError:
+    try:
+        from flash_attn_interface import flash_attn_func as _fa_func
+        _HAS_FA, _FA_VERSION = True, "FA3 (flash_attn_interface)"
+    except ImportError:
+        _HAS_FA, _FA_VERSION = False, "not found"
+
 
 @dataclass
 class Result:
@@ -75,9 +85,25 @@ def run_one(
 ):
     device = "cuda"
 
-    q = torch.empty(batch, heads, seq_len, head_dim, device=device, dtype=dtype)
-    k = torch.empty(batch, heads, seq_len, head_dim, device=device, dtype=dtype)
-    v = torch.empty(batch, heads, seq_len, head_dim, device=device, dtype=dtype)
+    if dtype == torch.float8_e4m3fn:
+        if not _HAS_FA:
+            raise RuntimeError("FP8 requires Flash Attention (FA4 on Blackwell, FA3 on Hopper); not found")
+        # FA uses BSHD layout and accepts native FP8 tensors — correct memory footprint and compute.
+        q = torch.empty(batch, seq_len, heads, head_dim, device=device, dtype=dtype)
+        k = torch.empty(batch, seq_len, heads, head_dim, device=device, dtype=dtype)
+        v = torch.empty(batch, seq_len, heads, head_dim, device=device, dtype=dtype)
+
+        def call_attn():
+            result = _fa_func(q, k, v, causal=True)
+            return result[0] if isinstance(result, (tuple, list)) else result
+    else:
+        q = torch.empty(batch, heads, seq_len, head_dim, device=device, dtype=dtype)
+        k = torch.empty(batch, heads, seq_len, head_dim, device=device, dtype=dtype)
+        v = torch.empty(batch, heads, seq_len, head_dim, device=device, dtype=dtype)
+
+        def call_attn():
+            with sdpa_kernel([SDPBackend.FLASH_ATTENTION, SDPBackend.EFFICIENT_ATTENTION]):
+                return F.scaled_dot_product_attention(q, k, v, is_causal=True)
 
     torch.cuda.empty_cache()
     torch.cuda.reset_peak_memory_stats()
@@ -87,21 +113,20 @@ def run_one(
     poller = threading.Thread(target=_poll_telemetry, args=(gpu_index, stop_event, telemetry), daemon=True)
     poller.start()
 
-    with sdpa_kernel([SDPBackend.FLASH_ATTENTION, SDPBackend.EFFICIENT_ATTENTION]):
-        for _ in range(warmup):
-            _ = F.scaled_dot_product_attention(q, k, v, is_causal=True)
+    for _ in range(warmup):
+        call_attn()
 
-        torch.cuda.synchronize()
+    torch.cuda.synchronize()
 
-        start = torch.cuda.Event(enable_timing=True)
-        end = torch.cuda.Event(enable_timing=True)
+    start = torch.cuda.Event(enable_timing=True)
+    end = torch.cuda.Event(enable_timing=True)
 
-        start.record()
-        for _ in range(iters):
-            _ = F.scaled_dot_product_attention(q, k, v, is_causal=True)
-        end.record()
+    start.record()
+    for _ in range(iters):
+        call_attn()
+    end.record()
 
-        torch.cuda.synchronize()
+    torch.cuda.synchronize()
 
     stop_event.set()
     poller.join()
@@ -153,7 +178,12 @@ def main():
 
     torch.cuda.set_device(args.gpu_index)
 
-    dtypes = {"fp16": torch.float16, "bf16": torch.bfloat16, "fp32": torch.float32}
+    dtypes = {
+        "fp16": torch.float16,
+        "bf16": torch.bfloat16,
+        "fp32": torch.float32,
+        "fp8":  torch.float8_e4m3fn,
+    }
     if args.dtype not in dtypes:
         raise ValueError(f"Unsupported dtype: {args.dtype}. Choose from {list(dtypes)}")
     dtype = dtypes[args.dtype]
@@ -163,6 +193,7 @@ def main():
     print("GPU:", gpu_name)
     print("PyTorch:", torch.__version__)
     print("CUDA:", torch.version.cuda)
+    print("Flash Attention:", _FA_VERSION if _HAS_FA else "not found — FP8 cells will be skipped")
     print()
 
     results = []

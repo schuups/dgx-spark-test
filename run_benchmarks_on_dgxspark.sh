@@ -11,8 +11,8 @@ set -euo pipefail
 IMAGE="nvcr.io/nvidia/pytorch:26.04-py3"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-mkdir -p "${SCRIPT_DIR}/results"
-nvidia-smi -q -d POWER > "${SCRIPT_DIR}/results/spark_power_caps.txt"
+mkdir -p "${SCRIPT_DIR}/results/fp8"
+nvidia-smi -q -d POWER > "${SCRIPT_DIR}/results/fp8/spark_power_caps.txt"
 
 docker run --rm \
   --gpus all \
