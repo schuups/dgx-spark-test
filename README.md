@@ -4,7 +4,7 @@
 
 Standalone microbenchmarks comparing scaled-dot-product attention (SDPA) throughput on **GH200** (Alps/CSCS) vs **DGX Spark** (rented from [enverge.ai](https://enverge.ai) for a 24h period), to understand where the DGX Spark stands relative to data-centre-class hardware, thus whether it can represent a viable alternative to Anthropic and OpenAI cloud subscriptions for powering coding agents. More details on `CLAUDE.md`.
 
-The **GH200** is not a consumer device: it is a data-centre-class superchip (here accessed via CSCS Alps). The **DGX Spark (GB10)** is a recently introduced Blackwell-equipped personal workstation. On paper, these two systems are not competing products, with the comparison being between *data-centre-level GPU performance* and *what you can run on a desk*. **Yet, the wish remains that we could move some capabilities from the data center, to our desk**. The GB10 is the newer architecture (Blackwell vs Hopper), but it is designed for efficiency (e.g., ~10 Watts vs. 500 Watts) and personal use rather than maximum throughput, which might be why the results below show it being slower despite being the more recent chip.
+The **GH200** is not a consumer device: it is a data-centre-class superchip (here accessed via CSCS Alps). The **DGX Spark (GB10)** is a recently introduced Blackwell-equipped personal workstation. On paper, these two systems are not competing products, with the comparison being between *data-centre-level GPU performance* and *what you can run on a desk*. **Yet, the wish remains that we could move some capabilities from the data center, to our desk**. The GB10 is the newer architecture (Blackwell vs Hopper), but it is designed for efficiency (e.g., ~10 Watts vs. ~500 Watts) and personal use rather than maximum throughput, which might be why the results below show it being slower despite being the more recent chip.
 
 
 ## Running the benchmarks
@@ -129,11 +129,13 @@ Whether the GB10's absolute throughput is *sufficient* for a given agentic use c
 
 ### Ongoing work and future plans
 
-The FP16 benchmarks above cover only one data type. Repeating the sweep on smaller dtypes (e.g. FP8 and FP4 for the DGX Spark), relevant for quantised models, was underway (the code on this commit represents untested WIP) but was interrupted when the rental period ran out: the FlashAttention 4 build process on the DGX Spark (needed for FP4 support), for which I relied on a PR supporting `sm_121`, ran for > 2h hours before the allocation ran out. [enverge.ai](https://enverge.ai), the provider I selected for this activity, has plans to offer stacks on DGX Spark (e.g. multiple ones connected via QSFP cables). Another rental will thus be considered at some point to complete the remaining dtype benchmarks and to extend the tests to larger models.
+The FP16 benchmarks above cover only one data type. Repeating the sweep on smaller dtypes (e.g. FP8 and FP4 for the DGX Spark), relevant for quantised models, was underway (the code on this commit represents untested WIP on data types other than FP16/BF16) but was interrupted when the rental period ran out: the FlashAttention 4 build process on the DGX Spark (needed for FP4 support), for which I relied on an unmerged PR adding `sm_121` support, ran for > 2h hours before the allocation timed out. 
+
+The provider I selected for this activity, [enverge.ai](https://enverge.ai), has plans to offer stacks on DGX Spark (e.g. multiple boxes connected via QSFP cables). Another rental will thus be considered at some point to complete the remaining dtype benchmarks and to extend the tests to larger models (thus including networking aspects in the benchmarks).
 
 ---
 
-## Example: Claude Code against a local model on DGX Spark
+## Practical usage example: Claude Code against a local model running on a DGX Spark
 
 ![Claude Code talking to a local nemotron-3-super:120b on DGX Spark](claude_coding_test.png)
 
@@ -170,7 +172,7 @@ export ANTHROPIC_MODEL="nemotron-3-super:120b"
 claude --model nemotron-3-super:120b
 ```
 
----
+
 
 ## Thanks
 
