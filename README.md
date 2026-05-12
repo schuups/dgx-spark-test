@@ -131,7 +131,7 @@ Whether the GB10's absolute throughput is *sufficient* for a given agentic use c
 
 The FP16 benchmarks above cover only one data type. Repeating the sweep on smaller dtypes (e.g. FP8 and FP4 for the DGX Spark), relevant for quantised models, was underway (the code on this commit represents untested WIP on data types other than FP16/BF16) but was interrupted when the rental period ran out: the FlashAttention 4 build process on the DGX Spark (needed for FP4 support), for which I relied on an unmerged PR adding `sm_121` support, ran for > 2h hours before the allocation timed out. 
 
-The provider I selected for this activity, [enverge.ai](https://enverge.ai), has plans to offer stacks on DGX Spark (e.g. multiple boxes connected via QSFP cables). Another rental will thus be considered at some point to complete the remaining dtype benchmarks and to extend the tests to larger models (thus including networking aspects in the benchmarks).
+The provider I selected for this activity, [enverge.ai](https://enverge.ai), has plans to offer stacks of DGX Spark (e.g. multiple boxes connected via QSFP cables). Another rental will thus be considered at some point to complete the remaining dtype benchmarks and to extend the tests to larger models (thus including networking aspects in the benchmarks).
 
 ---
 
